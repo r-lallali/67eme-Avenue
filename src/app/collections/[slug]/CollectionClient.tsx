@@ -33,7 +33,7 @@ export default function CollectionClient({
             </div>
 
             {/* Product grid */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+            <div className="max-w-7xl mx-auto py-8 sm:py-12" style={{ paddingLeft: 24, paddingRight: 24 }}>
                 {products.length === 0 ? (
                     <p className="text-center text-muted body-text py-20">
                         Aucun produit dans cette catégorie pour le moment.

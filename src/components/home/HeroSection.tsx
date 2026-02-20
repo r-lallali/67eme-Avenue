@@ -9,7 +9,7 @@ export default function HeroSection() {
     return (
         <Link
             href="/collections/all"
-            className="block relative w-full overflow-hidden h-[65vh] min-h-[400px] md:h-[85vh] md:min-h-[500px] group cursor-pointer"
+            className="block relative w-full overflow-hidden h-[55vh] min-h-[350px] md:h-[75vh] md:min-h-[450px] group cursor-pointer"
         >
             {/* Background image */}
             <Image

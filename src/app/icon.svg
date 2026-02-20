@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Minimalist, modern "R" monogram -->
+  <rect width="512" height="512" fill="#000000" />
+  <path d="M160 120h120c55 0 92 35 92 84 0 38-22 66-54 78l68 110h-72l-58-98h-36v98h-60V120zm60 52v72h54c22 0 38-12 38-36s-16-36-38-36h-54z" fill="#ffffff" />
+</svg>

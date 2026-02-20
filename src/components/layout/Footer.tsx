@@ -166,7 +166,7 @@ export default function Footer() {
                         </div>
 
                         {/* Payment icons */}
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                             <div className="flex items-center justify-center rounded" style={{ width: 50, height: 34, backgroundColor: "#006FCF" }}>
                                 <span className="text-white font-bold" style={{ fontSize: 8 }}>AMEX</span>
                             </div>

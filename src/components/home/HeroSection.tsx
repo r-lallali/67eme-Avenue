@@ -7,13 +7,16 @@ import { ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
     return (
-        <section className="relative w-full overflow-hidden h-[65vh] min-h-[400px] md:h-[85vh] md:min-h-[500px]">
+        <Link
+            href="/collections/all"
+            className="block relative w-full overflow-hidden h-[65vh] min-h-[400px] md:h-[85vh] md:min-h-[500px] group cursor-pointer"
+        >
             {/* Background image */}
             <Image
                 src="/images/hero-new.jpg"
                 alt="RALYS Collection Urban Ghost"
                 fill
-                className="object-cover"
+                className="object-cover group-hover:scale-105 transition-transform duration-1000"
                 style={{ objectPosition: "center 30%" }}
                 priority
             />
@@ -51,24 +54,10 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.6 }}
-                    className="text-white/60 uppercase text-[13px] tracking-[0.2em] font-light mb-7"
+                    className="text-white/60 uppercase text-[13px] tracking-[0.2em] font-light md:mb-7"
                 >
                     10% Off · Limited Time
                 </motion.p>
-
-                {/* CTA Button */}
-                <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.8 }}
-                >
-                    <Link
-                        href="/collections/all"
-                        className="inline-flex items-center gap-2 text-white uppercase hover:bg-white hover:text-black transition-all duration-500 text-[12px] tracking-[0.2em] font-normal px-8 py-3.5 border border-white/80"
-                    >
-                        Enter →
-                    </Link>
-                </motion.div>
             </div>
 
             {/* Scroll indicator */}
@@ -85,6 +74,6 @@ export default function HeroSection() {
                     <ChevronDown size={20} strokeWidth={1} className="text-white/50" />
                 </motion.div>
             </motion.div>
-        </section>
+        </Link>
     );
 }

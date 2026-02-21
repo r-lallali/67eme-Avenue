@@ -260,12 +260,12 @@ export default function ProductClient({
 
                 {/* Related */}
                 {related.length > 0 && (
-                    <div className="mt-16 pt-12 border-t border-border">
-                        <h2 className="heading-md mb-8">Vous aimerez aussi</h2>
+                    <div className="mt-16 pt-12 border-t border-border" style={{ paddingBottom: "80px" }}>
+                        <h2 className="heading-md" style={{ paddingBottom: "40px", paddingTop: "40px" }}>Vous aimerez aussi</h2>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                             {related.map((p) => (
                                 <Link key={p.id} href={`/products/${p.slug}`} className="group block">
-                                    <div className="relative aspect-square overflow-hidden bg-surface mb-3">
+                                    <div className="relative aspect-square overflow-hidden bg-surface" style={{ marginBottom: "24px" }}>
                                         <Image
                                             src={p.images[0]}
                                             alt={p.name}
@@ -273,10 +273,10 @@ export default function ProductClient({
                                             className="object-cover group-hover:scale-105 transition-transform duration-700"
                                         />
                                     </div>
-                                    <h3 className="text-xs tracking-[0.1em] uppercase font-light">
+                                    <h3 className="text-xs tracking-[0.1em] uppercase font-light" style={{ paddingBottom: "8px" }}>
                                         {p.name}
                                     </h3>
-                                    <p className="text-xs tracking-wider text-muted mt-1">
+                                    <p className="text-xs tracking-wider text-muted">
                                         €{p.price.toFixed(2)} EUR
                                     </p>
                                 </Link>

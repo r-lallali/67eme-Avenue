@@ -83,8 +83,8 @@ export default function OrderTrackingPage() {
     const currentStepIndex = steps.findIndex(s => s.id === orderStatus) || 1; // Default to confirmed if not found
 
     return (
-        <div className="min-h-screen bg-white text-black">
-            <div className="w-full max-w-[1000px] mx-auto" style={{ padding: "0 24px", paddingTop: "60px", paddingBottom: "100px" }}>
+        <div className="min-h-screen bg-white text-black flex justify-center">
+            <div className="w-full" style={{ maxWidth: "900px", padding: "0 24px", paddingTop: "60px", paddingBottom: "100px" }}>
 
                 {/* Header Section */}
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between" style={{ borderBottom: "1px solid #e5e7eb", paddingBottom: "24px", marginBottom: "48px" }}>

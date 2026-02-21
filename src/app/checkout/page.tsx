@@ -140,8 +140,8 @@ export default function CheckoutPage() {
     };
 
     return (
-        <div className="min-h-screen bg-white text-black">
-            <div className="w-full max-w-[1200px] mx-auto" style={{ padding: "0 24px", paddingTop: "60px", paddingBottom: "100px" }}>
+        <div className="min-h-screen bg-white text-black flex justify-center">
+            <div className="w-full" style={{ maxWidth: "1000px", padding: "0 24px", paddingTop: "60px", paddingBottom: "100px" }}>
                 <h1 style={{ fontSize: "32px", fontWeight: 300, letterSpacing: "0.03em", marginBottom: "48px", textTransform: "uppercase" }}>
                     Finaliser la commande
                 </h1>

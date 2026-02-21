@@ -33,8 +33,8 @@ export default function CartDrawer() {
                         className="fixed right-0 top-0 h-full w-full sm:w-[420px] bg-white z-50 flex flex-col shadow-2xl"
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-                            <h2 className="text-sm tracking-[0.2em] uppercase font-light flex items-center gap-2">
+                        <div className="flex items-center justify-between" style={{ padding: "20px 24px", borderBottom: "1px solid #e5e7eb" }}>
+                            <h2 className="text-sm tracking-[0.2em] uppercase flex items-center gap-2" style={{ fontWeight: 400 }}>
                                 <ShoppingBag size={16} strokeWidth={1.5} />
                                 Panier ({items.length})
                             </h2>
@@ -47,26 +47,31 @@ export default function CartDrawer() {
                         </div>
 
                         {/* Items */}
-                        <div className="flex-1 overflow-y-auto no-scrollbar px-6 py-4">
+                        <div className="flex-1 overflow-y-auto no-scrollbar" style={{ padding: "16px 24px" }}>
                             {items.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center h-full text-center">
                                     <ShoppingBag
                                         size={40}
                                         strokeWidth={1}
-                                        className="text-muted mb-4"
+                                        style={{ color: "#9ca3af", marginBottom: "16px" }}
                                     />
-                                    <p className="text-sm tracking-wider text-muted">
+                                    <p className="text-sm tracking-wider" style={{ color: "#9ca3af" }}>
                                         Votre panier est vide
                                     </p>
                                 </div>
                             ) : (
-                                <div className="space-y-6">
-                                    {items.map((item) => (
+                                <div style={{ paddingBottom: "24px" }}>
+                                    {items.map((item, index) => (
                                         <div
                                             key={`${item.id}-${item.size}`}
                                             className="flex gap-4"
+                                            style={{
+                                                paddingBottom: "24px",
+                                                marginBottom: index !== items.length - 1 ? "24px" : "0",
+                                                borderBottom: index !== items.length - 1 ? "1px solid #e5e7eb" : "none"
+                                            }}
                                         >
-                                            <div className="w-20 h-20 bg-surface flex-shrink-0 relative overflow-hidden">
+                                            <div className="w-20 h-20 flex-shrink-0 relative overflow-hidden" style={{ backgroundColor: "#f9fafb" }}>
                                                 <Image
                                                     src={item.image}
                                                     alt={item.name}
@@ -74,47 +79,52 @@ export default function CartDrawer() {
                                                     className="object-cover"
                                                 />
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h3 className="text-xs tracking-wider uppercase font-medium truncate">
-                                                    {item.name}
-                                                </h3>
-                                                <p className="text-xs text-muted mt-1 tracking-wider">
-                                                    Taille: {item.size}
-                                                </p>
-                                                <p className="text-xs tracking-wider mt-1">
-                                                    €{item.price.toFixed(2)}
-                                                </p>
-                                                <div className="flex items-center gap-3 mt-2">
-                                                    <button
-                                                        onClick={() =>
-                                                            updateQuantity(
-                                                                item.id,
-                                                                item.size,
-                                                                item.quantity - 1
-                                                            )
-                                                        }
-                                                        className="p-0.5 hover:opacity-50 transition-opacity"
-                                                    >
-                                                        <Minus size={12} />
-                                                    </button>
-                                                    <span className="text-xs tracking-wider w-4 text-center">
-                                                        {item.quantity}
-                                                    </span>
-                                                    <button
-                                                        onClick={() =>
-                                                            updateQuantity(
-                                                                item.id,
-                                                                item.size,
-                                                                item.quantity + 1
-                                                            )
-                                                        }
-                                                        className="p-0.5 hover:opacity-50 transition-opacity"
-                                                    >
-                                                        <Plus size={12} />
-                                                    </button>
+                                            <div className="flex-1 min-w-0" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                                                <div>
+                                                    <h3 className="text-xs tracking-wider uppercase font-medium truncate">
+                                                        {item.name}
+                                                    </h3>
+                                                    <p className="text-xs tracking-wider" style={{ color: "#6b7280", marginTop: "4px" }}>
+                                                        Taille: {item.size}
+                                                    </p>
+                                                    <p className="text-xs tracking-wider mt-1">
+                                                        {item.price.toFixed(2)} €
+                                                    </p>
+                                                </div>
+                                                <div className="flex items-center mt-2">
+                                                    <div className="flex items-center gap-3">
+                                                        <button
+                                                            onClick={() =>
+                                                                updateQuantity(
+                                                                    item.id,
+                                                                    item.size,
+                                                                    item.quantity - 1
+                                                                )
+                                                            }
+                                                            className="p-0.5 hover:opacity-50 transition-opacity"
+                                                        >
+                                                            <Minus size={12} />
+                                                        </button>
+                                                        <span className="text-xs tracking-wider w-4 text-center">
+                                                            {item.quantity}
+                                                        </span>
+                                                        <button
+                                                            onClick={() =>
+                                                                updateQuantity(
+                                                                    item.id,
+                                                                    item.size,
+                                                                    item.quantity + 1
+                                                                )
+                                                            }
+                                                            className="p-0.5 hover:opacity-50 transition-opacity"
+                                                        >
+                                                            <Plus size={12} />
+                                                        </button>
+                                                    </div>
                                                     <button
                                                         onClick={() => removeItem(item.id, item.size)}
-                                                        className="ml-auto p-0.5 text-muted hover:text-foreground transition-colors"
+                                                        className="ml-auto p-0.5 hover:opacity-50 transition-colors"
+                                                        style={{ color: "#9ca3af", transition: "color 0.2s" }}
                                                     >
                                                         <X size={14} />
                                                     </button>
@@ -128,13 +138,18 @@ export default function CartDrawer() {
 
                         {/* Footer */}
                         {items.length > 0 && (
-                            <div className="border-t border-border px-6 py-5 space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs tracking-[0.15em] uppercase font-light">
-                                        Total
+                            <div style={{ borderTop: "1px solid #e5e7eb", padding: "20px 24px" }}>
+                                <div className="flex items-center justify-between" style={{ paddingBottom: "16px" }}>
+                                    <span style={{ fontSize: "14px", color: "#6b7280" }}>
+                                        Sous-total
                                     </span>
-                                    <span className="text-sm tracking-wider font-medium">
-                                        €{total().toFixed(2)} EUR
+                                    <span style={{ fontSize: "14px", color: "#000" }}>
+                                        {total().toFixed(2)} €
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between" style={{ paddingBottom: "24px" }}>
+                                    <span style={{ fontSize: "12px", color: "#9ca3af" }}>
+                                        Taxes et livraison calculées à l'étape suivante
                                     </span>
                                 </div>
                                 <button
@@ -144,18 +159,20 @@ export default function CartDrawer() {
                                     }}
                                     style={{
                                         width: "100%",
-                                        padding: "18px 0",
-                                        fontSize: "15px",
+                                        padding: "16px 0",
+                                        fontSize: "14px",
                                         fontWeight: 500,
-                                        letterSpacing: "0.03em",
+                                        letterSpacing: "0.05em",
                                         border: "none",
                                         cursor: "pointer",
-                                        backgroundColor: "#000000ff",
+                                        backgroundColor: "black",
                                         color: "white",
-                                        transition: "all 0.3s",
+                                        transition: "opacity 0.3s",
+                                        borderRadius: "8px",
                                     }}
+                                    className="hover:opacity-80"
                                 >
-                                    Commander
+                                    PASSER LA COMMANDE
                                 </button>
                             </div>
                         )}

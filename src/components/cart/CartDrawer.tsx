@@ -4,10 +4,12 @@ import Image from "next/image";
 import { X, Plus, Minus, ShoppingBag } from "lucide-react";
 import { useCartStore } from "@/lib/store";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function CartDrawer() {
     const { items, isOpen, closeCart, removeItem, updateQuantity, total } =
         useCartStore();
+    const router = useRouter();
 
     return (
         <AnimatePresence>
@@ -138,7 +140,7 @@ export default function CartDrawer() {
                                 <button
                                     onClick={() => {
                                         closeCart();
-                                        window.location.href = "/checkout";
+                                        router.push("/checkout");
                                     }}
                                     style={{
                                         width: "100%",

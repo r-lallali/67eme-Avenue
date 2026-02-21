@@ -32,6 +32,7 @@ export default function ProductClient({
             size: selectedSize,
             color: product.colors[0],
             slug: product.slug,
+            quantity: quantity,
         });
         openCart();
     };

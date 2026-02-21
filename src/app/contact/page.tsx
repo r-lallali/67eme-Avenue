@@ -140,7 +140,7 @@ export default function ContactPage() {
                                 required
                                 type="email"
                                 name="email"
-                                placeholder="E-mail *"
+                                placeholder="E-mail"
                                 value={form.email}
                                 onChange={handleChange}
                                 style={{

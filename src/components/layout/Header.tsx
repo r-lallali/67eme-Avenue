@@ -7,7 +7,6 @@ import { useCartStore } from "@/lib/store";
 import { useSession } from "next-auth/react";
 
 const navLinks = [
-    { href: "/", label: "ACCUEIL" },
     { href: "/collections/all", label: "ALL" },
     { href: "/collections/tops", label: "TOPS" },
     { href: "/collections/pants", label: "PANTS" },

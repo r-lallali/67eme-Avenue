@@ -82,7 +82,7 @@ export default function FaqPage() {
                     <div className="space-y-20">
                         {faqCategories.map((category, catIndex) => (
                             <div key={catIndex}>
-                                <h2 className="text-base font-bold tracking-wider mb-4">
+                                <h2 className="text-base font-bold tracking-wider mb-4" style={{ paddingBottom: "10px", paddingTop: "30px" }}>
                                     {category.title}
                                 </h2>
                                 <div className="border-t border-gray-200">
@@ -99,7 +99,7 @@ export default function FaqPage() {
                                                     className="flex-shrink-0 group-open:rotate-180 transition-transform duration-300 text-gray-400"
                                                 />
                                             </summary>
-                                            <div className="text-sm text-gray-500 tracking-wide pb-6 pr-8 leading-relaxed">
+                                            <div className="text-sm text-gray-500 tracking-wide pb-6 pr-8 leading-relaxed" style={{ paddingBottom: "20px" }}>
                                                 {item.answer}
                                             </div>
                                         </details>

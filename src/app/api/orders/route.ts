@@ -9,6 +9,16 @@ interface OrderItemInput {
     quantity: number;
 }
 
+interface ShippingAddressInput {
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+    zipCode: string;
+    country: string;
+    phone: string;
+}
+
 export async function POST(req: Request) {
     try {
         // Check authentication
@@ -20,7 +30,15 @@ export async function POST(req: Request) {
             );
         }
 
-        const { items } = (await req.json()) as { items: OrderItemInput[] };
+        const body = await req.json() as { items: OrderItemInput[], shippingAddress: ShippingAddressInput };
+        const { items, shippingAddress } = body;
+
+        if (!shippingAddress) {
+            return NextResponse.json(
+                { error: "L'adresse de livraison est requise." },
+                { status: 400 }
+            );
+        }
 
         if (!items || items.length === 0) {
             return NextResponse.json(
@@ -30,7 +48,7 @@ export async function POST(req: Request) {
         }
 
         // Fetch product prices from DB (server-side security)
-        const productIds = [...new Set(items.map((item) => item.productId))];
+        const productIds = Array.from(new Set(items.map((item) => item.productId)));
         const products = await prisma.product.findMany({
             where: { id: { in: productIds } },
         });
@@ -48,7 +66,7 @@ export async function POST(req: Request) {
         }
 
         // Calculate total
-        const total = items.reduce((sum, item) => {
+        const total = items.reduce((sum: number, item: OrderItemInput) => {
             const product = productMap.get(item.productId)!;
             return sum + product.price * item.quantity;
         }, 0);
@@ -58,8 +76,16 @@ export async function POST(req: Request) {
             data: {
                 userId: session.user.id,
                 total,
+                status: "CONFIRMED",
+                shippingFirstName: shippingAddress.firstName,
+                shippingLastName: shippingAddress.lastName,
+                shippingAddress: shippingAddress.address,
+                shippingCity: shippingAddress.city,
+                shippingZipCode: shippingAddress.zipCode,
+                shippingCountry: shippingAddress.country,
+                shippingPhone: shippingAddress.phone,
                 items: {
-                    create: items.map((item) => ({
+                    create: items.map((item: any) => ({
                         productId: item.productId,
                         size: item.size,
                         quantity: item.quantity,
@@ -81,9 +107,10 @@ export async function POST(req: Request) {
 
         // Send order confirmation email (fire and forget)
         if (user) {
-            sendOrderConfirmationEmail(user.email, user.firstName, {
+            sendOrderConfirmationEmail(user.email, shippingAddress.firstName || user.firstName, {
                 id: order.id,
                 total: order.total,
+                shippingAddress,
                 items: order.items.map((item) => ({
                     name: item.product.name,
                     size: item.size,

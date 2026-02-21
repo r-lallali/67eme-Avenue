@@ -13,6 +13,15 @@ interface OrderEmail {
     id: string;
     items: OrderItemEmail[];
     total: number;
+    shippingAddress?: {
+        firstName: string;
+        lastName: string;
+        address: string;
+        city: string;
+        zipCode: string;
+        country: string;
+        phone: string;
+    };
 }
 
 async function sendEmail(to: string, subject: string, htmlContent: string) {
@@ -149,17 +158,41 @@ export async function sendOrderConfirmationEmail(
                 </tbody>
             </table>
 
-            <div style="text-align: right; margin-top: 24px; padding-top: 16px; border-top: 2px solid #000000;">
+            <div style="text-align: right; margin-top: 24px; padding-top: 16px; border-top: 2px solid #000000; margin-bottom: 32px;">
                 <span style="font-size: 16px; font-weight: 600; color: #000000;">
                     Total : ${order.total.toFixed(2)} €
                 </span>
             </div>
+
+            ${order.shippingAddress ? `
+            <div style="background-color: #f9fafb; padding: 24px; border-radius: 8px; margin-bottom: 32px; text-align: left;">
+                <h3 style="font-size: 14px; font-weight: 600; color: #000000; margin-top: 0; margin-bottom: 12px; letter-spacing: 0.05em; text-transform: uppercase;">
+                    Livraison
+                </h3>
+                <p style="font-size: 14px; color: #374151; margin: 0 0 4px;">
+                    ${order.shippingAddress.firstName} ${order.shippingAddress.lastName}
+                </p>
+                <p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">
+                    ${order.shippingAddress.address}
+                </p>
+                <p style="font-size: 14px; color: #6b7280; margin: 0 0 12px;">
+                    ${order.shippingAddress.zipCode} ${order.shippingAddress.city}, ${order.shippingAddress.country}
+                </p>
+                
+                <h3 style="font-size: 12px; font-weight: 600; color: #9ca3af; margin: 16px 0 4px; letter-spacing: 0.05em; text-transform: uppercase;">
+                    Délai estimé
+                </h3>
+                <p style="font-size: 14px; color: #10b981; font-weight: 500; margin: 0;">
+                    5 à 7 jours ouvrés (Livraison Standard)
+                </p>
+            </div>
+            ` : ''}
         </div>
 
-        <div style="padding: 24px 32px; text-align: center;">
-            <a href="${process.env.NEXTAUTH_URL || "http://localhost:3000"}/account"
-               style="display: inline-block; padding: 16px 48px; background-color: #000000; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.05em;">
-                VOIR MON COMPTE
+        <div style="padding: 0 32px 32px; text-align: center;">
+            <a href="${process.env.NEXTAUTH_URL || "http://localhost:3000"}/orders/${order.id}"
+               style="display: inline-block; padding: 16px 48px; background-color: #000000; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.05em; border-radius: 4px;">
+                SUIVRE MA COMMANDE
             </a>
         </div>
 

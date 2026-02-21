@@ -136,6 +136,10 @@ export default function CartDrawer() {
                                     </span>
                                 </div>
                                 <button
+                                    onClick={() => {
+                                        closeCart();
+                                        window.location.href = "/checkout";
+                                    }}
                                     style={{
                                         width: "100%",
                                         padding: "18px 0",

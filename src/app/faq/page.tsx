@@ -63,7 +63,7 @@ const faqCategories = [
 export default function FaqPage() {
     return (
         <div className="min-h-screen bg-white text-black">
-            <div className="flex justify-center px-6 sm:px-8">
+            <div className="flex justify-center px-6 sm:px-8" style={{ paddingLeft: 24, paddingRight: 24 }}>
                 <div className="w-full max-w-[720px] py-20 sm:py-32">
 
                     {/* Title */}

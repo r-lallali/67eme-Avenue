@@ -34,8 +34,8 @@ export default function FeaturedProducts({ products }: { products: Product[] }) 
                 transition={{ duration: 0.6 }}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between mb-8" style={{ paddingLeft: 24, paddingRight: 24 }}>
-                    <h2 className="heading-md">Collection</h2>
+                <div className="flex items-center justify-between mb-8" style={{ paddingLeft: 24, paddingRight: 24, paddingTop: 24 }}>
+                    <h2 className="heading-md" style={{ paddingBottom: 24 }}>Collection</h2>
                     <div className="flex items-center gap-4">
                         <span className="text-xs tracking-wider text-muted">
                             {currentIndex + 1}/{products.length}

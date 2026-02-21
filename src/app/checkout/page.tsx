@@ -243,7 +243,7 @@ export default function CheckoutPage() {
                                             onClick={() => setIsAddressDropdownOpen(!isAddressDropdownOpen)}
                                             className="flex items-center text-[14px] text-black focus:outline-none"
                                         >
-                                            <span style={{ fontWeight: 500, marginRight: "8px" }}>Utiliser une adresse enregistrée</span>
+                                            <span style={{ fontWeight: 500, marginRight: "8px", paddingBottom: "12px" }}>Utiliser une adresse enregistrée</span>
                                             <ChevronDown size={16} className={`transition-transform duration-200 text-gray-500 ${isAddressDropdownOpen ? 'rotate-180' : ''}`} />
                                         </button>
 
@@ -286,7 +286,7 @@ export default function CheckoutPage() {
                                     </div>
                                 )}
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-5" style={{ paddingBottom: "12px" }}>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-5" style={{ paddingBottom: "20px" }}>
                                     <div>
                                         <FloatingInput
                                             required
@@ -328,7 +328,7 @@ export default function CheckoutPage() {
                                     />
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2 mb-5 relative z-30" style={{ paddingBottom: "12px" }}>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2 mb-5 relative z-30" style={{ paddingBottom: "20px" }}>
                                     <div>
                                         <FloatingInput
                                             required

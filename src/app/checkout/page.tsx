@@ -5,6 +5,9 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCartStore } from "@/lib/store";
+import { FloatingInput } from "@/components/ui/FloatingInput";
+import { FloatingSelect } from "@/components/ui/FloatingSelect";
+import { AddressAutocomplete } from "@/components/ui/AddressAutocomplete";
 
 export default function CheckoutPage() {
     const { data: session, status } = useSession();
@@ -186,36 +189,34 @@ export default function CheckoutPage() {
 
                                 {addresses.length > 0 && (
                                     <div className="mb-8">
-                                        <label style={labelStyle}>Sélectionner une adresse enregistrée</label>
-                                        <div className="relative">
-                                            <select
-                                                style={{ ...inputStyle, appearance: "none", cursor: "pointer", color: "#000", backgroundColor: "#fafafa" }}
-                                                onChange={(e) => {
-                                                    const selectedId = e.target.value;
-                                                    if (selectedId) {
-                                                        const addr = addresses.find(a => a.id === selectedId);
-                                                        if (addr) {
-                                                            setForm({
-                                                                shippingFirstName: addr.firstName,
-                                                                shippingLastName: addr.lastName,
-                                                                shippingAddress: addr.address,
-                                                                shippingCity: addr.city,
-                                                                shippingZipCode: addr.zipCode,
-                                                                shippingCountry: addr.country,
-                                                                shippingPhone: addr.phone,
-                                                            });
-                                                        }
+                                        <FloatingSelect
+                                            id="address-selector"
+                                            label="Sélectionner une adresse enregistrée"
+                                            options={[
+                                                { label: "-- Utiliser une autre adresse --", value: "" },
+                                                ...addresses.map((addr) => ({
+                                                    label: `${addr.firstName} ${addr.lastName} - ${addr.address}, ${addr.city} ${addr.isDefault ? "(Principale)" : ""}`,
+                                                    value: addr.id
+                                                }))
+                                            ]}
+                                            onChange={(e) => {
+                                                const selectedId = e.target.value;
+                                                if (selectedId) {
+                                                    const addr = addresses.find(a => a.id === selectedId);
+                                                    if (addr) {
+                                                        setForm({
+                                                            shippingFirstName: addr.firstName,
+                                                            shippingLastName: addr.lastName,
+                                                            shippingAddress: addr.address,
+                                                            shippingCity: addr.city,
+                                                            shippingZipCode: addr.zipCode,
+                                                            shippingCountry: addr.country,
+                                                            shippingPhone: addr.phone,
+                                                        });
                                                     }
-                                                }}
-                                            >
-                                                <option value="">-- Utiliser une autre adresse --</option>
-                                                {addresses.map((addr) => (
-                                                    <option key={addr.id} value={addr.id}>
-                                                        {addr.firstName} {addr.lastName} - {addr.address}, {addr.city} {addr.isDefault && "(Principale)"}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
+                                                }
+                                            }}
+                                        />
                                     </div>
                                 )}
 
@@ -227,90 +228,100 @@ export default function CheckoutPage() {
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
                                     <div>
-                                        <input
+                                        <FloatingInput
                                             required
                                             type="text"
                                             name="shippingFirstName"
-                                            placeholder="Prénom"
+                                            label="Prénom"
                                             value={form.shippingFirstName}
                                             onChange={handleChange}
-                                            style={inputStyle}
                                         />
                                     </div>
                                     <div>
-                                        <input
+                                        <FloatingInput
                                             required
                                             type="text"
                                             name="shippingLastName"
-                                            placeholder="Nom"
+                                            label="Nom"
                                             value={form.shippingLastName}
                                             onChange={handleChange}
-                                            style={inputStyle}
                                         />
                                     </div>
                                 </div>
 
-                                <div className="mb-5">
-                                    <input
+                                <div className="mb-5 relative z-40">
+                                    <AddressAutocomplete
                                         required
-                                        type="text"
                                         name="shippingAddress"
-                                        placeholder="Adresse (Numéro et nom de rue, bâtiment, appartement...)"
+                                        label="Adresse (Numéro et nom de rue...)"
                                         value={form.shippingAddress}
                                         onChange={handleChange}
-                                        style={inputStyle}
+                                        mode="address"
+                                        onAddressSelect={(data) => {
+                                            setForm(prev => ({
+                                                ...prev,
+                                                shippingAddress: data.address,
+                                                shippingCity: data.city || prev.shippingCity,
+                                                shippingZipCode: data.zipCode || prev.shippingZipCode
+                                            }));
+                                        }}
                                     />
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5 relative z-30">
                                     <div>
-                                        <input
+                                        <FloatingInput
                                             required
                                             type="text"
                                             name="shippingZipCode"
-                                            placeholder="Code postal"
+                                            label="Code postal"
                                             value={form.shippingZipCode}
                                             onChange={handleChange}
-                                            style={inputStyle}
                                         />
                                     </div>
                                     <div>
-                                        <input
+                                        <AddressAutocomplete
                                             required
-                                            type="text"
                                             name="shippingCity"
-                                            placeholder="Ville"
+                                            label="Ville"
                                             value={form.shippingCity}
                                             onChange={handleChange}
-                                            style={inputStyle}
+                                            mode="city"
+                                            onAddressSelect={(data) => {
+                                                setForm(prev => ({
+                                                    ...prev,
+                                                    shippingCity: data.city,
+                                                    shippingZipCode: data.zipCode || prev.shippingZipCode
+                                                }));
+                                            }}
                                         />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                                    <div className="relative">
-                                        <select
+                                    <div>
+                                        <FloatingSelect
                                             name="shippingCountry"
+                                            label="Pays/région"
                                             value={form.shippingCountry}
                                             onChange={handleChange}
-                                            style={{ ...inputStyle, appearance: "none", cursor: "pointer", color: "#000" }}
-                                        >
-                                            <option value="France">France</option>
-                                            <option value="Belgique">Belgique</option>
-                                            <option value="Suisse">Suisse</option>
-                                            <option value="Luxembourg">Luxembourg</option>
-                                            <option value="Canada">Canada</option>
-                                        </select>
+                                            options={[
+                                                { label: "France", value: "France" },
+                                                { label: "Belgique", value: "Belgique" },
+                                                { label: "Suisse", value: "Suisse" },
+                                                { label: "Luxembourg", value: "Luxembourg" },
+                                                { label: "Canada", value: "Canada" },
+                                            ]}
+                                        />
                                     </div>
                                     <div>
-                                        <input
+                                        <FloatingInput
                                             required
                                             type="tel"
                                             name="shippingPhone"
-                                            placeholder="Téléphone"
+                                            label="Téléphone"
                                             value={form.shippingPhone}
                                             onChange={handleChange}
-                                            style={inputStyle}
                                         />
                                     </div>
                                 </div>

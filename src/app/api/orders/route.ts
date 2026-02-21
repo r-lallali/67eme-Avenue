@@ -105,6 +105,27 @@ export async function POST(req: Request) {
             where: { id: session.user.id },
         });
 
+        // Save address as default if user has no addresses yet
+        const addressCount = await prisma.address.count({
+            where: { userId: session.user.id }
+        });
+
+        if (addressCount === 0) {
+            await prisma.address.create({
+                data: {
+                    userId: session.user.id,
+                    firstName: shippingAddress.firstName || user?.firstName || "",
+                    lastName: shippingAddress.lastName || user?.lastName || "",
+                    address: shippingAddress.address,
+                    city: shippingAddress.city,
+                    zipCode: shippingAddress.zipCode,
+                    country: shippingAddress.country || "France",
+                    phone: shippingAddress.phone || "",
+                    isDefault: true,
+                }
+            });
+        }
+
         // Send order confirmation email (fire and forget)
         if (user) {
             sendOrderConfirmationEmail(user.email, shippingAddress.firstName || user.firstName, {

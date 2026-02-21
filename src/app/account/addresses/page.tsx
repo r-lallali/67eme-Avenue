@@ -4,6 +4,9 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ChevronLeft, MapPin, Plus, X } from "lucide-react";
+import { FloatingInput } from "@/components/ui/FloatingInput";
+import { FloatingSelect } from "@/components/ui/FloatingSelect";
+import { AddressAutocomplete } from "@/components/ui/AddressAutocomplete";
 
 export default function AddressesPage() {
     const { data: session, status } = useSession();
@@ -304,80 +307,104 @@ export default function AddressesPage() {
                             )}
 
                             <form onSubmit={handleSubmit} className="space-y-5">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                    <input
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5 relative z-50">
+                                    <div>
+                                        <FloatingInput
+                                            required
+                                            type="text"
+                                            name="firstName"
+                                            label="Prénom"
+                                            value={form.firstName}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <FloatingInput
+                                            required
+                                            type="text"
+                                            name="lastName"
+                                            label="Nom"
+                                            value={form.lastName}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mb-5 relative z-40">
+                                    <AddressAutocomplete
                                         required
-                                        type="text"
-                                        name="firstName"
-                                        placeholder="Prénom"
-                                        value={form.firstName}
+                                        name="address"
+                                        label="Adresse (Numéro et nom de rue...)"
+                                        value={form.address}
                                         onChange={handleChange}
-                                        style={inputStyle}
-                                    />
-                                    <input
-                                        required
-                                        type="text"
-                                        name="lastName"
-                                        placeholder="Nom"
-                                        value={form.lastName}
-                                        onChange={handleChange}
-                                        style={inputStyle}
+                                        mode="address"
+                                        onAddressSelect={(data) => {
+                                            setForm(prev => ({
+                                                ...prev,
+                                                address: data.address,
+                                                city: data.city || prev.city,
+                                                zipCode: data.zipCode || prev.zipCode
+                                            }));
+                                        }}
                                     />
                                 </div>
 
-                                <input
-                                    required
-                                    type="text"
-                                    name="address"
-                                    placeholder="Adresse complète"
-                                    value={form.address}
-                                    onChange={handleChange}
-                                    style={inputStyle}
-                                />
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                    <input
-                                        required
-                                        type="text"
-                                        name="zipCode"
-                                        placeholder="Code postal"
-                                        value={form.zipCode}
-                                        onChange={handleChange}
-                                        style={inputStyle}
-                                    />
-                                    <input
-                                        required
-                                        type="text"
-                                        name="city"
-                                        placeholder="Ville"
-                                        value={form.city}
-                                        onChange={handleChange}
-                                        style={inputStyle}
-                                    />
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5 relative z-30">
+                                    <div>
+                                        <FloatingInput
+                                            required
+                                            type="text"
+                                            name="zipCode"
+                                            label="Code postal"
+                                            value={form.zipCode}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <AddressAutocomplete
+                                            required
+                                            name="city"
+                                            label="Ville"
+                                            value={form.city}
+                                            onChange={handleChange}
+                                            mode="city"
+                                            onAddressSelect={(data) => {
+                                                setForm(prev => ({
+                                                    ...prev,
+                                                    city: data.city,
+                                                    zipCode: data.zipCode || prev.zipCode
+                                                }));
+                                            }}
+                                        />
+                                    </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                    <select
-                                        name="country"
-                                        value={form.country}
-                                        onChange={handleChange}
-                                        style={{ ...inputStyle, appearance: "none", cursor: "pointer", color: "#000" }}
-                                    >
-                                        <option value="France">France</option>
-                                        <option value="Belgique">Belgique</option>
-                                        <option value="Suisse">Suisse</option>
-                                        <option value="Luxembourg">Luxembourg</option>
-                                        <option value="Canada">Canada</option>
-                                    </select>
-                                    <input
-                                        required
-                                        type="tel"
-                                        name="phone"
-                                        placeholder="Téléphone"
-                                        value={form.phone}
-                                        onChange={handleChange}
-                                        style={inputStyle}
-                                    />
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                                    <div>
+                                        <FloatingSelect
+                                            name="country"
+                                            label="Pays/région"
+                                            value={form.country}
+                                            onChange={handleChange}
+                                            options={[
+                                                { label: "France", value: "France" },
+                                                { label: "Belgique", value: "Belgique" },
+                                                { label: "Suisse", value: "Suisse" },
+                                                { label: "Luxembourg", value: "Luxembourg" },
+                                                { label: "Canada", value: "Canada" },
+                                            ]}
+                                        />
+                                    </div>
+                                    <div>
+                                        <FloatingInput
+                                            required
+                                            type="tel"
+                                            name="phone"
+                                            label="Téléphone"
+                                            value={form.phone}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
                                 </div>
 
                                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "12px", marginBottom: "32px" }}>

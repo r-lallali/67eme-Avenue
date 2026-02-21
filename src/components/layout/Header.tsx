@@ -96,20 +96,24 @@ export default function Header() {
                     style={{ height: 120 }}
                 >
                     {/* Logo - left */}
-                    <Link
-                        href="/"
-                        className="uppercase"
-                        style={{
-                            fontSize: 28,
-                            fontWeight: 400,
-                            letterSpacing: "0.35em",
-                        }}
-                    >
-                        RALYS
-                    </Link>
+                    <div className="flex-1 flex items-center justify-end" style={{ paddingRight: 100 }}>
+                        <Link
+                            href="/"
+                            className="inline-flex p-2 hover:opacity-80 transition-opacity"
+                        >
+                            <Image
+                                src="/icon.svg"
+                                alt="Ralys"
+                                width={72}
+                                height={72}
+                                priority
+                                className="w-auto h-[72px] object-contain"
+                            />
+                        </Link>
+                    </div>
 
                     {/* Desktop nav - centered */}
-                    <nav className="flex items-center flex-1 justify-center" style={{ gap: 32 }}>
+                    <nav className="flex items-center justify-center shrink-0" style={{ gap: 32 }}>
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
@@ -127,7 +131,7 @@ export default function Header() {
                     </nav>
 
                     {/* Icons - right */}
-                    <div className="flex items-center" style={{ gap: 16 }}>
+                    <div className="flex-1 flex items-center justify-end" style={{ gap: 16 }}>
                         <button
                             onClick={() => setIsSearchOpen(true)}
                             className="hover:opacity-50 transition-opacity flex items-center justify-center"
@@ -170,7 +174,7 @@ export default function Header() {
                 </div>
             </div>
 
-            {/* Mobile header: hamburger | RALYS | icons */}
+            {/* Mobile header: hamburger | Logo | icons */}
             <div className="lg:hidden" style={{ padding: "0 16px" }}>
                 <div
                     className="flex items-center justify-between"
@@ -189,14 +193,16 @@ export default function Header() {
                     {/* Center — Logo */}
                     <Link
                         href="/"
-                        className="absolute left-1/2 -translate-x-1/2 uppercase"
-                        style={{
-                            fontSize: 22,
-                            fontWeight: 400,
-                            letterSpacing: "0.35em",
-                        }}
+                        className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center p-2 hover:opacity-80 transition-opacity"
                     >
-                        RALYS
+                        <Image
+                            src="/icon.svg"
+                            alt="Ralys"
+                            width={48}
+                            height={48}
+                            priority
+                            className="w-auto h-[48px] object-contain"
+                        />
                     </Link>
 
                     {/* Right — 3 icons */}

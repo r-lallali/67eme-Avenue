@@ -14,13 +14,16 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "RALYS — Streetwear Premium",
+  title: "67ème Avenue",
   description:
-    "RALYS — Marque de vêtements streetwear premium. Découvrez notre collection de t-shirts, hoodies, pantalons et accessoires.",
-  keywords: ["streetwear", "fashion", "premium", "ralys", "vêtements"],
+    "67ème Avenue",
+  keywords: ["67ème Avenue", "shop", "portfolio"],
+  icons: {
+    icon: "/icon.svg?v=3"
+  },
   openGraph: {
-    title: "RALYS — Streetwear Premium",
-    description: "Marque de vêtements streetwear premium française.",
+    title: "Ralys Shop",
+    description: "Portfolio Ralys Shop",
     type: "website",
   },
 };

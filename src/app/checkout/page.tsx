@@ -8,6 +8,7 @@ import { useCartStore } from "@/lib/store";
 import { FloatingInput } from "@/components/ui/FloatingInput";
 import { FloatingSelect } from "@/components/ui/FloatingSelect";
 import { AddressAutocomplete } from "@/components/ui/AddressAutocomplete";
+import { ChevronDown } from "lucide-react";
 
 export default function CheckoutPage() {
     const { data: session, status } = useSession();
@@ -18,6 +19,7 @@ export default function CheckoutPage() {
     const [error, setError] = useState("");
 
     const [addresses, setAddresses] = useState<any[]>([]);
+    const [isAddressDropdownOpen, setIsAddressDropdownOpen] = useState(false);
 
     // Form state
     const [form, setForm] = useState({
@@ -111,6 +113,21 @@ export default function CheckoutPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Strict frontend validation
+        if (!form.shippingFirstName.trim() || !form.shippingLastName.trim() || !form.shippingAddress.trim() || !form.shippingCity.trim() || !form.shippingZipCode.trim() || !form.shippingCountry.trim() || !form.shippingPhone.trim()) {
+            setError("Veuillez remplir tous les champs obligatoires.");
+            return;
+        }
+
+        // Phone validation: must be +33 followed by exactly 9 digits
+        const phoneStr = form.shippingPhone.replace(/\s+/g, '');
+        const phoneRegex = /^\+33[1-9]\d{8}$/;
+        if (!phoneRegex.test(phoneStr)) {
+            setError("Le numéro de téléphone doit être sous la forme +33 suivi de 9 chiffres (ex: +33612345678).");
+            return;
+        }
+
         setLoading(true);
         setError("");
 
@@ -188,35 +205,46 @@ export default function CheckoutPage() {
                                 </h2>
 
                                 {addresses.length > 0 && (
-                                    <div className="mb-8">
-                                        <FloatingSelect
-                                            id="address-selector"
-                                            label="Sélectionner une adresse enregistrée"
-                                            options={[
-                                                { label: "-- Utiliser une autre adresse --", value: "" },
-                                                ...addresses.map((addr) => ({
-                                                    label: `${addr.firstName} ${addr.lastName} - ${addr.address}, ${addr.city} ${addr.isDefault ? "(Principale)" : ""}`,
-                                                    value: addr.id
-                                                }))
-                                            ]}
-                                            onChange={(e) => {
-                                                const selectedId = e.target.value;
-                                                if (selectedId) {
-                                                    const addr = addresses.find(a => a.id === selectedId);
-                                                    if (addr) {
-                                                        setForm({
-                                                            shippingFirstName: addr.firstName,
-                                                            shippingLastName: addr.lastName,
-                                                            shippingAddress: addr.address,
-                                                            shippingCity: addr.city,
-                                                            shippingZipCode: addr.zipCode,
-                                                            shippingCountry: addr.country,
-                                                            shippingPhone: addr.phone,
-                                                        });
-                                                    }
-                                                }
-                                            }}
-                                        />
+                                    <div className="mb-8 relative z-50">
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsAddressDropdownOpen(!isAddressDropdownOpen)}
+                                            className="flex items-center text-[14px] text-black focus:outline-none"
+                                        >
+                                            <span style={{ fontWeight: 500, marginRight: "8px" }}>Utiliser une adresse enregistrée</span>
+                                            <ChevronDown size={16} className={`transition-transform duration-200 text-gray-500 ${isAddressDropdownOpen ? 'rotate-180' : ''}`} />
+                                        </button>
+
+                                        {isAddressDropdownOpen && (
+                                            <div className="absolute top-full left-0 w-full lg:w-[400px] mt-3 bg-white border border-gray-300 rounded-[8px] shadow-lg overflow-hidden flex flex-col z-50">
+                                                <ul className="max-h-60 overflow-y-auto">
+                                                    {addresses.map((addr) => (
+                                                        <li
+                                                            key={addr.id}
+                                                            onClick={() => {
+                                                                setForm({
+                                                                    shippingFirstName: addr.firstName,
+                                                                    shippingLastName: addr.lastName,
+                                                                    shippingAddress: addr.address,
+                                                                    shippingCity: addr.city,
+                                                                    shippingZipCode: addr.zipCode,
+                                                                    shippingCountry: addr.country,
+                                                                    shippingPhone: addr.phone,
+                                                                });
+                                                                setIsAddressDropdownOpen(false);
+                                                            }}
+                                                            className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-[14px] border-b border-gray-100 last:border-b-0"
+                                                        >
+                                                            <div className="font-semibold text-gray-900 mb-1">
+                                                                {addr.firstName} {addr.lastName}
+                                                                {addr.isDefault && <span className="text-gray-400 font-normal text-[12px] ml-1">(Principale)</span>}
+                                                            </div>
+                                                            <div className="text-gray-500">{addr.address}, {addr.zipCode} {addr.city}</div>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
 
@@ -226,8 +254,8 @@ export default function CheckoutPage() {
                                     </div>
                                 )}
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                                    <div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ marginBottom: "20px" }}>
+                                    <div style={{ paddingRight: "10px" }}>
                                         <FloatingInput
                                             required
                                             type="text"
@@ -237,7 +265,7 @@ export default function CheckoutPage() {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                    <div>
+                                    <div style={{ paddingLeft: "10px" }}>
                                         <FloatingInput
                                             required
                                             type="text"
@@ -249,7 +277,7 @@ export default function CheckoutPage() {
                                     </div>
                                 </div>
 
-                                <div className="mb-5 relative z-40">
+                                <div className="relative z-40" style={{ marginBottom: "20px" }}>
                                     <AddressAutocomplete
                                         required
                                         name="shippingAddress"
@@ -268,8 +296,8 @@ export default function CheckoutPage() {
                                     />
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5 relative z-30">
-                                    <div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 relative z-30" style={{ marginBottom: "20px" }}>
+                                    <div style={{ paddingRight: "10px" }}>
                                         <FloatingInput
                                             required
                                             type="text"
@@ -279,7 +307,7 @@ export default function CheckoutPage() {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                    <div>
+                                    <div style={{ paddingLeft: "10px" }}>
                                         <AddressAutocomplete
                                             required
                                             name="shippingCity"
@@ -298,8 +326,8 @@ export default function CheckoutPage() {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                                    <div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ marginBottom: "20px" }}>
+                                    <div style={{ paddingRight: "10px" }}>
                                         <FloatingSelect
                                             name="shippingCountry"
                                             label="Pays/région"
@@ -314,7 +342,7 @@ export default function CheckoutPage() {
                                             ]}
                                         />
                                     </div>
-                                    <div>
+                                    <div style={{ paddingLeft: "10px" }}>
                                         <FloatingInput
                                             required
                                             type="tel"

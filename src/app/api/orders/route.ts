@@ -40,6 +40,26 @@ export async function POST(req: Request) {
             );
         }
 
+        const { firstName, lastName, address, city, zipCode, country, phone } = shippingAddress;
+
+        // Ensure no empty fields are allowed
+        if (!firstName?.trim() || !lastName?.trim() || !address?.trim() || !city?.trim() || !zipCode?.trim() || !country?.trim() || !phone?.trim()) {
+            return NextResponse.json(
+                { error: "Tous les champs de l'adresse de livraison sont obligatoires." },
+                { status: 400 }
+            );
+        }
+
+        // Phone format validation on backend
+        const phoneStr = phone.replace(/\s+/g, '');
+        const phoneRegex = /^\+33[1-9]\d{8}$/;
+        if (!phoneRegex.test(phoneStr)) {
+            return NextResponse.json(
+                { error: "Le numéro de téléphone doit être sous la forme +33 suivi de 9 chiffres." },
+                { status: 400 }
+            );
+        }
+
         if (!items || items.length === 0) {
             return NextResponse.json(
                 { error: "Votre panier est vide." },

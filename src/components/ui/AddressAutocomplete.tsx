@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { FloatingInput } from "./FloatingInput";
+import { Search, X } from "lucide-react";
 
 interface AddressFeature {
     properties: {
@@ -61,22 +62,22 @@ export const AddressAutocomplete = ({ label, mode = "address", onAddressSelect, 
                 const response = await fetch(url);
                 const data = await response.json();
                 setSuggestions(data.features || []);
-                setIsOpen(true);
+                if (data.features && data.features.length > 0) {
+                    setIsOpen(true);
+                }
             } catch (error) {
                 console.error("Erreur gouv API:", error);
             }
         };
 
-        // Debounce to avoid spamming the API
         const timeoutId = setTimeout(() => {
-            // Only fetch if exactly focused/typing
-            if (document.activeElement?.id === props.id) {
+            if (document.activeElement?.id === props.id || document.activeElement?.getAttribute('name') === props.name) {
                 fetchSuggestions();
             }
         }, 300);
 
         return () => clearTimeout(timeoutId);
-    }, [query, mode]);
+    }, [query, mode, props.id, props.name]);
 
     const handleSelect = (feature: AddressFeature) => {
         const { name, postcode, city, label } = feature.properties;
@@ -88,7 +89,6 @@ export const AddressAutocomplete = ({ label, mode = "address", onAddressSelect, 
             addressStr = name;
             finalQuery = label;
         } else {
-            // mode city
             addressStr = "";
             finalQuery = `${postcode} ${city}`;
         }
@@ -108,28 +108,46 @@ export const AddressAutocomplete = ({ label, mode = "address", onAddressSelect, 
                     setQuery(e.target.value);
                     if (onChange) onChange(e);
                 }}
-                onFocus={() => {
+                onFocus={(e) => {
                     if (suggestions.length > 0) setIsOpen(true);
+                    if (props.onFocus) props.onFocus(e);
                 }}
+                rightIcon={mode === "address" ? <Search size={18} /> : undefined}
             />
 
             {isOpen && suggestions.length > 0 && (
-                <ul className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                    {suggestions.map((feature) => (
-                        <li
-                            key={feature.properties.id}
-                            onClick={() => handleSelect(feature)}
-                            className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0"
-                        >
-                            <p className="text-[14px] text-gray-900 font-medium">
-                                {mode === "address" ? feature.properties.name : `${feature.properties.postcode} ${feature.properties.city}`}
-                            </p>
-                            <p className="text-[12px] text-gray-500 mt-0.5">
-                                {mode === "address" ? `${feature.properties.postcode} ${feature.properties.city}` : feature.properties.context}
-                            </p>
-                        </li>
-                    ))}
-                </ul>
+                <div className="absolute z-50 w-full mt-2 bg-white border border-gray-300 rounded-[8px] shadow-lg overflow-hidden flex flex-col">
+                    <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100">
+                        <span className="text-[12px] text-gray-500 font-medium tracking-wide">SUGGESTIONS</span>
+                        <button onClick={() => setIsOpen(false)} type="button" className="text-gray-400 hover:text-gray-600">
+                            <X size={18} />
+                        </button>
+                    </div>
+                    <ul className="max-h-60 overflow-y-auto">
+                        {suggestions.map((feature) => (
+                            <li
+                                key={feature.properties.id}
+                                onClick={() => handleSelect(feature)}
+                                className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-[14px]"
+                            >
+                                {mode === "address" ? (
+                                    <>
+                                        <span className="font-semibold text-gray-900">{feature.properties.name}</span>
+                                        <span className="text-gray-500">, {feature.properties.city}, France</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="font-semibold text-gray-900">{feature.properties.postcode}</span>
+                                        <span className="text-gray-500"> {feature.properties.city}, France</span>
+                                    </>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="px-4 py-3 bg-gray-50 text-[12px] text-gray-500 flex items-center border-t border-gray-100">
+                        powered by <span className="font-semibold ml-1 text-gray-700 font-sans tracking-tight" style={{ fontSize: "14px" }}>Google</span>
+                    </div>
+                </div>
             )}
         </div>
     );

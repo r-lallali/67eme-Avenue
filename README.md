@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 67ème Avenue 🛍️
 
-## Getting Started
+> **🚨 Note Importante :** Ce projet est un **site e-commerce factice** (mockup) réalisé dans le cadre d'un portfolio interactif. Aucune vraie commande ni paiement réel n'est traité sur cette plateforme.
 
-First, run the development server:
+Bienvenue sur le dépôt de **67ème Avenue**, une plateforme e-commerce vitrine moderne, rapide et élégante. Conçue pour offrir une expérience utilisateur haut-de-gamme, cette application de démonstration met en lumière les meilleures pratiques de développement web actuelles, de la navigation optimisée avec animations subtiles jusqu'à la gestion sécurisée d'une base de données relationnelle.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Fonctionnalités Principales
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Catalogue de Produits Dynamique** : Parcourez les articles avec une interface réactive et des temps de chargement instantanés.
+- **Panier d'Achat Interactif** : Ajout, modification et suppression d'articles via un tiroir latéral (Cart Drawer) fluide, géré avec un état global performant.
+- **Système de Commande (Checkout)** : Tunnel de commande complet et intuitif, simulant le processus d'achat de bout en bout.
+- **Authentification & Comptes Utilisateurs** : Inscription et connexion sécurisées permettant de gérer les sessions clients.
+- **Formulaire de Contact** : Intégration d'un système d'envoi d'emails transactionnels avec gestion des requêtes entrantes.
+- **Design Réactif & Animations** : Une interface moderne (UI/UX) qui s'adapte à tous les écrans, sublimée par des micro-interactions soignées.
+- **Performances & SEO** : Core Web Vitals optimisés, rendu hybride (SSR/SSG/Server Actions) grâce au App Router de Next.js.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Stack Technique
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Ce projet s'appuie sur une architecture Full-Stack moderne :
 
-## Learn More
+- **Framework** : [Next.js 16](https://nextjs.org/) (App Router, Server Actions)
+- **Frontend** : React 19, [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations** : [Framer Motion](https://www.framer.com/motion/)
+- **Gestion d'État** : [Zustand](https://zustand-demo.pmnd.rs/)
+- **Base de données & ORM** : PostgreSQL, [Prisma](https://www.prisma.io/)
+- **Authentification** : [NextAuth.js](https://next-auth.js.org/)
+- **Emails** : [Brevo API](https://www.brevo.com/)
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Installation & Lancement Local
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Si vous souhaitez explorer le code et lancer le projet localement :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Cloner le dépôt**
+   ```bash
+   git clone <votre-repo-url>
+   cd Shop
+   ```
 
-## Deploy on Vercel
+2. **Installer les dépendances**
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Configurer les variables d'environnement**
+   Créez un fichier `.env` à la racine et renseignez vos clés d'API (Base de données PostgreSQL, NextAuth Secret, clé d'API Brevo, etc.).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Initialiser la base de données**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   # Optionnel : peupler la base avec des données de test
+   npm run prisma:seed
+   ```
+
+5. **Lancer le serveur de développement**
+   ```bash
+   npm run dev
+   ```
+
+Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour découvrir le projet.
+
+---
+
+*Développé avec passion pour illustrer la création d'une expérience web contemporaine.*

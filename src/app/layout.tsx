@@ -18,9 +18,6 @@ export const metadata: Metadata = {
   description:
     "67ème Avenue",
   keywords: ["67ème Avenue", "shop", "portfolio"],
-  icons: {
-    icon: "/icon.svg?v=3"
-  },
   openGraph: {
     title: "Ralys Shop",
     description: "Portfolio Ralys Shop",

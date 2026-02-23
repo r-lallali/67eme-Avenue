@@ -26,39 +26,9 @@ Ce projet s'appuie sur une architecture Full-Stack moderne :
 - **Authentification** : [NextAuth.js](https://next-auth.js.org/)
 - **Emails** : [Brevo API](https://www.brevo.com/)
 
-## 🚀 Installation & Lancement Local
-
-Si vous souhaitez explorer le code et lancer le projet localement :
-
-1. **Cloner le dépôt**
-   ```bash
-   git clone <votre-repo-url>
-   cd Shop
-   ```
-
-2. **Installer les dépendances**
-   ```bash
-   npm install
-   ```
-
-3. **Configurer les variables d'environnement**
-   Créez un fichier `.env` à la racine et renseignez vos clés d'API (Base de données PostgreSQL, NextAuth Secret, clé d'API Brevo, etc.).
-
-4. **Initialiser la base de données**
-   ```bash
-   npx prisma generate
-   npx prisma db push
-   # Optionnel : peupler la base avec des données de test
-   npm run prisma:seed
-   ```
-
-5. **Lancer le serveur de développement**
-   ```bash
-   npm run dev
-   ```
-
-Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour découvrir le projet.
-
----
-
 *Développé avec passion pour illustrer la création d'une expérience web contemporaine.*
+
+**En résumé :**
+Ce portfolio est un mockup e-commerce complet (Next.js 16, Tailwind, Prisma) offrant une expérience moderne avec panier interactif et checkout simulé.
+Il met en avant une architecture robuste gérant base de données, authentification et animations fluides pour un rendu professionnel.
+Une véritable vitrine technique démontrant la maîtrise des performances web actuelles et des interactions de bout en bout.

@@ -27,8 +27,3 @@ Ce projet s'appuie sur une architecture Full-Stack moderne :
 - **Emails** : [Brevo API](https://www.brevo.com/)
 
 *Développé avec passion pour illustrer la création d'une expérience web contemporaine.*
-
-**En résumé :**
-Ce portfolio est un mockup e-commerce complet (Next.js 16, Tailwind, Prisma) offrant une expérience moderne avec panier interactif et checkout simulé.
-Il met en avant une architecture robuste gérant base de données, authentification et animations fluides pour un rendu professionnel.
-Une véritable vitrine technique démontrant la maîtrise des performances web actuelles et des interactions de bout en bout.

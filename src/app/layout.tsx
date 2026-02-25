@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/icon.png",
   },
+
   openGraph: {
     title: "Ralys Shop",
     description: "Portfolio Ralys Shop",

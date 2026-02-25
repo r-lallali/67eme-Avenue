@@ -18,15 +18,6 @@ export const metadata: Metadata = {
   description:
     "67ème Avenue",
   keywords: ["67ème Avenue", "shop", "portfolio"],
-  icons: {
-    icon: [
-      { url: '/icon.png', type: 'image/png' }
-    ],
-    shortcut: ['/icon.png'],
-    apple: [
-      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
-  },
   openGraph: {
     title: "Ralys Shop",
     description: "Portfolio Ralys Shop",
